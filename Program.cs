@@ -167,42 +167,34 @@ namespace SnakeGame
 
                 Console.Write("■");
 
-
-
-                ConsoleKeyInfo info = Console.ReadKey();
-
                 //Game Logic
 
-                switch (info.Key)
-
+                if (Console.KeyAvailable)
                 {
+                    ConsoleKeyInfo info = Console.ReadKey(true);
 
-                    case ConsoleKey.UpArrow:
+                    switch (info.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            if (movement != "DOWN")
+                                movement = "UP";
+                            break;
 
-                        movement = "UP";
+                        case ConsoleKey.DownArrow:
+                            if (movement != "UP")
+                                movement = "DOWN";
+                            break;
 
-                        break;
+                        case ConsoleKey.LeftArrow:
+                            if (movement != "RIGHT")
+                                movement = "LEFT";
+                            break;
 
-                    case ConsoleKey.DownArrow:
-
-                        movement = "DOWN";
-
-                        break;
-
-                    // ???
-
-                    case ConsoleKey.LeftArrow:
-
-                        movement = "LEFT";
-
-                        break;
-
-                    case ConsoleKey.RightArrow:
-
-                        movement = "RIGHT";
-
-                        break;
-
+                        case ConsoleKey.RightArrow:
+                            if (movement != "LEFT")
+                                movement = "RIGHT";
+                            break;
+                    }
                 }
 
                 if (movement == "UP")
@@ -295,7 +287,7 @@ namespace SnakeGame
 
                 }
 
-                Thread.Sleep(50);
+                Thread.Sleep(150);
 
             }
 
