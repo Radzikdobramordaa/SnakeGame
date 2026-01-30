@@ -33,8 +33,6 @@ namespace SnakeGame
 
             string movement = "RIGHT";
 
-            List<int> telje = new List<int>();
-
             int score = 0;
 
             Pixel hoofdd = new Pixel();
@@ -64,6 +62,8 @@ namespace SnakeGame
             int obstacleXpos = randomnummer.Next(1, screenwidth);
 
             int obstacleYpos = randomnummer.Next(1, screenheight);
+
+            bool grow = false;
 
             while (true)
 
@@ -139,15 +139,14 @@ namespace SnakeGame
 
                 Console.Write("H");
 
-                for (int i = 0; i < telje.Count(); i++)
+                Console.ForegroundColor = ConsoleColor.Green;
 
+                for (int i = 0; i < teljePositie.Count; i += 2)
                 {
-
-                    Console.SetCursorPosition(telje[i], telje[i + 1]);
-
+                    Console.SetCursorPosition(teljePositie[i], teljePositie[i + 1]);
                     Console.Write("■");
-
                 }
+
 
                 //Draw Snake
 
@@ -216,26 +215,26 @@ namespace SnakeGame
                 //Hindernis treffen
 
                 if (hoofd.xPos == obstacleXpos && hoofd.yPos == obstacleYpos)
-
                 {
-
                     score++;
+                    grow = true;
 
-                    obstacleXpos = randomnummer.Next(1, screenwidth);
-
-                    obstacleYpos = randomnummer.Next(1, screenheight);
-
+                    obstacleXpos = randomnummer.Next(1, screenwidth - 1);
+                    obstacleYpos = randomnummer.Next(1, screenheight - 1);
                 }
 
                 teljePositie.Insert(0, hoofd.xPos);
-
                 teljePositie.Insert(1, hoofd.yPos);
 
-                teljePositie.RemoveAt(teljePositie.Count - 1);
-
-                teljePositie.RemoveAt(teljePositie.Count - 1);
-
-                //Kollision mit Wände oder mit sich selbst
+                if (!grow)
+                {
+                    teljePositie.RemoveAt(teljePositie.Count - 1);
+                    teljePositie.RemoveAt(teljePositie.Count - 1);
+                }
+                else
+                {
+                    grow = false;
+                }
 
                 if (hoofd.xPos == 0 || hoofd.xPos == screenwidth - 1 || hoofd.yPos == 0 || hoofd.yPos == screenheight - 1)
 
@@ -259,35 +258,7 @@ namespace SnakeGame
 
                 }
 
-                for (int i = 0; i < telje.Count(); i += 2)
-
-                {
-
-                    if (hoofd.xPos == telje[i] && hoofd.yPos == telje[i + 1])
-
-                    {
-
-                        Console.Clear();
-
-                        Console.ForegroundColor = ConsoleColor.Red;
-
-                        Console.SetCursorPosition(screenwidth / 5, screenheight / 2);
-
-                        //???
-
-                        Console.SetCursorPosition(screenwidth / 5, screenheight / 2 + 1);
-
-                        Console.WriteLine("Dein Score ist: " + score);
-
-                        Console.SetCursorPosition(screenwidth / 5, screenheight / 2 + 2);
-
-                        Environment.Exit(0);
-
-                    }
-
-                }
-
-                Thread.Sleep(150);
+                Thread.Sleep(75);
 
             }
 
